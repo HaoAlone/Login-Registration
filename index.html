@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录注册</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+</head>
+<body>
+<header>
+    <a class="user" href="#"><i class="fa fa-user-circle"></i></a>
+</header>
+<main>
+    <div class="filp-model register">
+        <div class="model model-register">
+            <a class="close fa fa-close" href="#"></a>
+            <!--如果a下面还有子元素，委托给父元素的事件监听不到a，而是a下面的子元素，x也就不起作用了-->
+            <div class="tab">
+                <a class="login" href="#">登陆</a>
+                <a class="register active" href="#">注册</a>
+            </div>
+            <div class="content">
+                <div class="errorMsg"></div>
+                <form action="/register" method="get">
+                    <div class="input-field">
+                        <i class="fa fa-user-o"></i>
+                        <input type="text" name="username" placeholder="请输入用户名">
+                    </div>
+                    <div class="input-field">
+                        <i class="fa fa-lock"></i>
+                        <input type="text" name="password" placeholder="请输入密码">
+                    </div>
+                    <div class="input-field">
+                        <i class="fa fa-lock"></i>
+                        <input type="text" name="password2" placeholder="请再次输入密码">
+                    </div>
+                    <div class="input-field">
+                        <input type="submit" value="注册">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="model model-login">
+            <a class="close fa fa-close" href="#"></a>
+            <div class="tab">
+                <a class="login active" href="#">登陆</a>
+                <a class="register" href="#">注册</a>
+            </div>
+            <div class="content">
+                <div class="errorMsg"></div>
+                <form action="/login" method="get">
+                    <div class="input-field">
+                        <i class="fa fa-user-o"></i>
+                        <input type="text" name="username" placeholder="请输入用户名">
+                    </div>
+                    <div class="input-field">
+                        <i class="fa fa-lock"></i>
+                        <input type="text" name="password" placeholder="请输入密码">
+                    </div>
+                    <div class="input-field">
+                        <input type="submit" value="注册">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+  function $(selector) {
+    return document.querySelector(selector)
+  }
+  function $$(selector) {
+    return document.querySelectorAll(selector)
+  }
+
+  $('header .user').onclick = function (e) {
+    e.stopPropagation();
+    $('.filp-model').style.display = 'block';
+  }
+
+  //窗口关闭，和旋转
+  $('.filp-model').addEventListener('click',function (e) {
+    e.stopPropagation();//阻止冒泡
+    if(e.target.classList.contains('register')){
+      $('.filp-model').classList.remove('login');
+      $('.filp-model').classList.add('register');
+    }
+    if(e.target.classList.contains('login')){
+      $('.filp-model').classList.remove('register');
+      $('.filp-model').classList.add('login');
+    }
+    if(e.target.classList.contains('close')){
+      $('.filp-model').style.display = 'none';
+    }
+    console.log(e.target)
+    console.log(this)
+  })
+  document.addEventListener('click',function (e) {
+    $('.filp-model').style.display = 'none';
+  })
+
+  //    注册
+  $('.model-register form').addEventListener('click',function (e) {
+    e.preventDefault()
+    if(!/^\w{3,8}$/.test($('.model-register form input[name=username]').value)){
+      $('.model-register .errorMsg').innerText = '用户名需输入3-8个字符，包括字母数字下划线'
+      return false
+    }
+    if(/^chen$|^hao$/.test($('.model-register input[name=username]').value)){
+      $('.model-register .errorMsg').innerText = '用户名已存在'
+      return false
+    }
+    if(!/^\w{6,10}$/.test($('.model-register form input[name=password]').value)){
+      $('.model-register .errorMsg').innerText = '密码需输入6-10个字符，包括字母数字下划线'
+      return false
+    }
+    if($('.model-register form input[name=password]').value !== $('.model-register form input[name=password2]').value){
+      $('.model-register .errorMsg').innerText = '两次密码不一致'
+    }
+    this.submit();
+  })
+  //    登陆
+  $('.model-login form').addEventListener('click',function (e) {
+    e.preventDefault()
+    if(!/^\w{3,8}$/.test($('.model-login form input[name=username]').value)){
+      $('.model-login .errorMsg').innerText = '用户名需输入3-8个字符，包括字母数字下划线'
+      return false
+    }
+    if(!/^\w{6,10}$/.test($('.model-login form input[name=password]').value)){
+      $('.model-login .errorMsg').innerText = '密码需输入6-10个字符，包括字母数字下划线'
+      return false
+    }
+    this.submit();
+  })
+</script>
+</body>
+</html>
